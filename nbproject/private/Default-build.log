@@ -1,0 +1,17 @@
+./bas2tap/bas2tap -q -a10 -sftpUno ./cargadorBASIC/cargador.bas
+zcc +zx -o f1.bin -lndos src/textUtils.c src/esxdos.c examples/exampleSDWrite.c > ultimolog.txt
+/media/datos/soft/nodejs/node-v4.4.5-linux-x64/bin/node ./bin2tap-js/bin2tap.js ../f1.bin > ultimolog.txt
+cat ./cargadorBASIC/cargador.tap f1.tap > ExampleSDWrite.tap
+./CgLeches ExampleSDWrite.tap ExampleSDWrite.wav 3 > ultimolog.txt
+zcc +zx -o f2.bin -lndos src/textUtils.c src/esxdos.c examples/exampleSDRead.c > ultimolog.txt
+/media/datos/soft/nodejs/node-v4.4.5-linux-x64/bin/node ./bin2tap-js/bin2tap.js ../f2.bin > ultimolog.txt
+cat ./cargadorBASIC/cargador.tap f2.tap > ExampleSDRead.tap
+./CgLeches ExampleSDRead.tap ExampleSDRead.wav 3 > ultimolog.txt
+zcc +zx -o f3.bin -lndos src/textUtils.c src/esxdos.c examples/exampleSDList.c > ultimolog.txt
+/media/datos/soft/nodejs/node-v4.4.5-linux-x64/bin/node ./bin2tap-js/bin2tap.js ../f3.bin > ultimolog.txt
+cat ./cargadorBASIC/cargador.tap f3.tap > ExampleSDList.tap
+./CgLeches ExampleSDList.tap ExampleSDList.wav 3 > ultimolog.txt
+zcc +zx -o f4.bin -lndos src/textUtils.c src/esxdos.c examples/exampleSDStat.c > ultimolog.txt
+/media/datos/soft/nodejs/node-v4.4.5-linux-x64/bin/node ./bin2tap-js/bin2tap.js ../f4.bin > ultimolog.txt
+cat ./cargadorBASIC/cargador.tap f4.tap > ExampleSDStat.tap
+./CgLeches ExampleSDStat.tap ExampleSDStat.wav 3 > ultimolog.txt
