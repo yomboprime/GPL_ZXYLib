@@ -18,6 +18,8 @@ srcFilesExampleSDList = src/textUtils.c src/esxdos.c examples/exampleSDList.c
 
 srcFilesExampleSDStat = src/textUtils.c src/esxdos.c examples/exampleSDStat.c
 
+srcFilesExampleSDSeek = src/textUtils.c src/esxdos.c examples/exampleSDSeek.c
+
 srcFilesExampleFTPList = src/EspDrv/RingBuffer.c src/EspDrv/IPAddress.c src/EspDrv/EspDrv.c src/zxuno/zxuno.c src/esxdos.c src/textUtils.c src/zxuno/ftp.c src/zxuno/uart.c examples/exampleFTPList.c
 
 srcFilesExampleFTPDownload = src/EspDrv/RingBuffer.c src/EspDrv/IPAddress.c src/EspDrv/EspDrv.c src/zxuno/zxuno.c src/textUtils.c src/esxdos.c src/zxuno/ftp.c src/zxuno/uart.c examples/exampleFTPDownload.c
@@ -25,7 +27,7 @@ srcFilesExampleFTPDownload = src/EspDrv/RingBuffer.c src/EspDrv/IPAddress.c src/
 srcFilesExampleHTTP = src/EspDrv/RingBuffer.c src/EspDrv/IPAddress.c src/EspDrv/EspDrv.c src/zxuno/zxuno.c src/textUtils.c src/zxuno/uart.c examples/exampleHTTP.c
 
 # All the targets:
-all: generateBASICLoader createExample1 createExample2 createExample3 createExample4 createExample5 createExample6 createExample7
+all: generateBASICLoader createExample1 createExample2 createExample3 createExample4 createExample5 createExample6 createExample7 createExample8
 
 
 # Targets:
@@ -158,6 +160,25 @@ generateWav7:
 generateWavLeches7:
 	./CgLeches ExampleHTTP.tap ExampleHTTP.wav 3 > ultimolog.txt
 
+#------------------------------------------------------------------------------
+createExample8: compile8 createTAP8 concatenateTAPs8 generateWavLeches8
+
+compile8:
+	zcc +zx -o f8.bin -lndos $(srcFilesExampleSDSeek) > ultimolog.txt
+
+createTAP8:
+	$(node) ./bin2tap-js/bin2tap.js ../f8.bin > ultimolog.txt
+
+concatenateTAPs8:
+	cat ./cargadorBASIC/cargador.tap f8.tap > ExampleSDSeek.tap
+
+generateWav8:
+	tape2wav ./ExampleSDSeek.tap ./ExampleSDSeek.wav > ultimolog.txt
+
+generateWavLeches8:
+	./CgLeches ExampleSDSeek.tap ExampleSDSeek.wav 3 > ultimolog.txt
+
+#------------------------------------------------------------------------------
 
 clean:
 	$(RM) *.bin *.i *.op* *.o *.reloc *~ zcc_opt.def *.wav ./cargadorBASIC/cargador.tap
