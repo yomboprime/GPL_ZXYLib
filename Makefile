@@ -26,8 +26,12 @@ srcFilesExampleFTPDownload = src/EspDrv/RingBuffer.c src/EspDrv/IPAddress.c src/
 
 srcFilesExampleHTTP = src/EspDrv/RingBuffer.c src/EspDrv/IPAddress.c src/EspDrv/EspDrv.c src/zxuno/zxuno.c src/textUtils.c src/zxuno/uart.c examples/exampleHTTP.c
 
+srcFilesExampleUARTTerminal = src/textUtils.c src/esxdos.c src/zxuno/uart.c src/zxuno/zxuno.c examples/exampleUARTTerminal.c
+
+srcFilesExampleTCPTerminal = src/EspDrv/RingBuffer.c src/EspDrv/IPAddress.c src/EspDrv/EspDrv.c src/textUtils.c src/zxuno/uart.c src/zxuno/zxuno.c examples/exampleTCPTerminal.c
+
 # All the targets:
-all: generateBASICLoader createExample1 createExample2 createExample3 createExample4 createExample5 createExample6 createExample7 createExample8
+all: generateBASICLoader createExample1 createExample2 createExample3 createExample4 createExample5 createExample6 createExample7 createExample8 createExample9 createExample10
 
 
 # Targets:
@@ -177,6 +181,45 @@ generateWav8:
 
 generateWavLeches8:
 	./CgLeches ExampleSDSeek.tap ExampleSDSeek.wav 3 > ultimolog.txt
+
+#------------------------------------------------------------------------------
+createExample9: compile9 createTAP9 concatenateTAPs9 generateWavLeches9
+
+compile9:
+	zcc +zx -o f9.bin -lndos $(srcFilesExampleUARTTerminal) > ultimolog.txt
+
+createTAP9:
+	$(node) ./bin2tap-js/bin2tap.js ../f9.bin > ultimolog.txt
+
+concatenateTAPs9:
+	cat ./cargadorBASIC/cargador.tap f9.tap > UARTTERM.tap
+
+generateWav9:
+	tape2wav ./UARTTERM.tap ./UARTTERM.wav > ultimolog.txt
+
+generateWavLeches9:
+	./CgLeches UARTTERM.tap UARTTERM.wav 3 > ultimolog.txt
+
+
+#------------------------------------------------------------------------------
+
+createExample10: compile10 createTAP10 concatenateTAPs10 generateWavLeches10
+
+compile10:
+	zcc +zx -o f10.bin -lndos $(srcFilesExampleTCPTerminal) > ultimolog.txt
+
+createTAP10:
+	$(node) ./bin2tap-js/bin2tap.js ../f10.bin > ultimolog.txt
+
+concatenateTAPs10:
+	cat ./cargadorBASIC/cargador.tap f10.tap > TCPTERM.tap
+
+generateWav10:
+	tape2wav ./TCPTERM.tap ./TCPTERM.wav > ultimolog.txt
+
+generateWavLeches10:
+	./CgLeches TCPTERM.tap TCPTERM.wav 3 > ultimolog.txt
+
 
 #------------------------------------------------------------------------------
 

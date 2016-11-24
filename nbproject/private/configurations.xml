@@ -22,6 +22,8 @@
         <in>exampleSDSeek.c</in>
         <in>exampleSDStat.c</in>
         <in>exampleSDWrite.c</in>
+        <in>exampleTCPTerminal.c</in>
+        <in>exampleUARTTerminal.c</in>
       </df>
       <df name="lib">
       </df>

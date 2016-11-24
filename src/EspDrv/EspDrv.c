@@ -1228,8 +1228,8 @@ void EspDrv_espEmptyBuf(bool warn)
 // copied from Serial::timedRead
 int EspDrv_timedRead()
 {
-  int _timeout = 10000;
   int c;
+  long _timeout = 10000;
   long _startMillis = millis();
   do
   {
