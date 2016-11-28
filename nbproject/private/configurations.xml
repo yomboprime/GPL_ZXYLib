@@ -14,6 +14,14 @@
         <in>leches.c</in>
       </df>
       <df name="examples">
+        <df name="zxunowatch">
+          <df name="loader">
+          </df>
+          <df name="media">
+          </df>
+          <in>watchGraphicsDef.h</in>
+          <in>zxunowatch.c</in>
+        </df>
         <in>exampleFTPDownload.c</in>
         <in>exampleFTPList.c</in>
         <in>exampleHTTP.c</in>
@@ -47,6 +55,8 @@
         </df>
         <in>esxdos.c</in>
         <in>esxdos.h</in>
+        <in>graphics.c</in>
+        <in>graphics.h</in>
         <in>integerTypes.h</in>
         <in>textUtils.c</in>
         <in>textUtils.h</in>

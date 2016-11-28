@@ -17,11 +17,17 @@
 
 #include <input.h>
 #include <stdlib.h>
+#include <time.h>
 #include <string.h>
+#include "../../src/textUtils.h"
+#include "../../src/graphics.h"
+#include "watchGraphicsDef.h"
+//#include "../src/EspDrv/EspDrv.h"
+//#include "../src/EspDrv/IPAddress.h"
 
-#include "../src/textUtils.h"
-#include "../src/EspDrv/EspDrv.h"
-#include "../src/EspDrv/IPAddress.h"
+#define ALARM_D0_X 128
+#define ALARM_D0_Y 75
+
 
 #define getKey() in_Inkey()
 
@@ -33,27 +39,20 @@ void waitKey() {
 #define BUFFER_SIZE 128
 uint8_t buffer[ BUFFER_SIZE ];
 
-void main(void) {
+
+// Function prototypes
+
+void setPalette();
 
 
-    // Put your url here:
-    char* host = "google.es";
-    uint16_t serverPort = 80;
+#if 0
 
-    // ZX Spectrum BBS
-    //char* host = "retrobbs.sinclair.homepc.it";
-    //uint16_t serverPort = 23;
+void mainServer(void) {
 
     // Time service
-    //char* host = "india.colorado.edu";
-    //uint16_t serverPort = 13;
+    char* host = "india.colorado.edu";
+    uint16_t serverPort = 13;
 
-    // Meteorology service
-    //char* host = "rainmaker.wunderground.com";
-    //uint16_t serverPort = 23;
-
-
-    
     // Wifi name:
     char *ssid = "apoint";
     // Wifi password:
@@ -184,5 +183,104 @@ void main(void) {
 
     textUtils_println( "End. Press a key." );
     waitKey();
+
+}
+
+#endif
+
+void main(void) {
+
+    int i;
+
+    setPalette();
+    ula_plus_mode();
+
+    srand( time(NULL) );
+    textUtils_32ColumnsMode();
+    zx_border( INK_BLUE );
+
+/*
+    waitKey();
+
+    for ( i = 0; i < 50; i ++ ) {
+
+        paintGraphicPixelPosition( rand() % ( 256 - 8 ), rand() % ( 192 - 16 ), 1, 2, graphicsSmallDigits + 16 * ( rand() % 10 ) );
+
+    }
+*/
+
+    waitKey();
+
+    ula_normal_mode();
+
+}
+
+void setPalette() {
+
+    int i;
+
+    // GGG RRR BB
+    // 000 000 00
+
+    // Colors with BRIGHT = 0
+
+    ulaplus_set( 0, (uint8_t)0x00 );
+    // 000 001 10
+    ulaplus_set( 1, (uint8_t)0x06 );
+    // 000 110 00
+    ulaplus_set( 2, (uint8_t)0x18 );
+    // 011 000 10
+    ulaplus_set( 3, (uint8_t)0x62 );
+    // 000 000 00
+    ulaplus_set( 4, (uint8_t)0x00 );
+    // 110 110 11
+    ulaplus_set( 5, (uint8_t)0xDB );
+    // 111 111 11
+    ulaplus_set( 6, (uint8_t)0xFF );
+    // 110 110 11
+    ulaplus_set( 7, (uint8_t)0xDB );
+
+    // Same for paper
+    ulaplus_set( 8,  (uint8_t)0x00 );
+    ulaplus_set( 9,  (uint8_t)0x06 );
+    ulaplus_set( 10, (uint8_t)0x18 );
+    ulaplus_set( 11, (uint8_t)0x62 );
+    ulaplus_set( 12, (uint8_t)0x00 );
+    ulaplus_set( 13, (uint8_t)0xDB );
+    ulaplus_set( 14, (uint8_t)0xFF );
+    ulaplus_set( 15, (uint8_t)0xDB );
+
+    // Colors with BRIGHT = 1
+
+    // 000 000 00
+    ulaplus_set( 16, (uint8_t)0x00 );
+    // 000 000 00
+    ulaplus_set( 17, (uint8_t)0x00 );
+    // 000 000 00
+    ulaplus_set( 18, (uint8_t)0x00 );
+    // 000 000 00
+    ulaplus_set( 19, (uint8_t)0x00 );
+    // 000 000 00
+    ulaplus_set( 20, (uint8_t)0x00 );
+    // 000 000 00
+    ulaplus_set( 21, (uint8_t)0x00 );
+    // 101 110 00
+    ulaplus_set( 22, (uint8_t)0xB8 );
+    // 111 110 11
+    ulaplus_set( 23, (uint8_t)0xFB );
+
+    // Same for paper
+    ulaplus_set( 24, (uint8_t)0x00 );
+    ulaplus_set( 25, (uint8_t)0x00 );
+    ulaplus_set( 26, (uint8_t)0x00 );
+    ulaplus_set( 27, (uint8_t)0x00 );
+    ulaplus_set( 28, (uint8_t)0x00 );
+    ulaplus_set( 29, (uint8_t)0x00 );
+    ulaplus_set( 30, (uint8_t)0xB8 );
+    ulaplus_set( 31, (uint8_t)0xFB );
+
+    for ( i = 32; i < 64; i++ ) {
+        ulaplus_set( i, (uint8_t)0x00 );
+    }
 
 }

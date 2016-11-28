@@ -10,6 +10,9 @@
         <in>leches.c</in>
       </df>
       <df name="examples">
+        <df name="zxunowatch">
+          <in>watchGraphicsDef.h</in>
+        </df>
         <in>exampleSDList.c</in>
         <in>exampleSDRead.c</in>
         <in>exampleSDStat.c</in>
@@ -21,6 +24,8 @@
           <in>zxuno.c</in>
         </df>
         <in>esxdos.c</in>
+        <in>graphics.c</in>
+        <in>graphics.h</in>
         <in>textUtils.c</in>
       </df>
     </df>
@@ -52,6 +57,11 @@
           <buildCommand>${MAKE} -f Makefile</buildCommand>
           <cleanCommand>${MAKE} -f Makefile clean</cleanCommand>
           <executablePath></executablePath>
+          <cTool>
+            <incDir>
+              <pElem>../../../soft/z88dk/z88dk/include</pElem>
+            </incDir>
+          </cTool>
         </makeTool>
         <preBuild>
           <preBuildCommandWorkingDir>.</preBuildCommandWorkingDir>
@@ -72,7 +82,16 @@
       </item>
       <item path="examples/exampleSDWrite.c" ex="false" tool="0" flavor2="0">
       </item>
+      <item path="examples/zxunowatch/watchGraphicsDef.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="src/esxdos.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/graphics.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/graphics.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/textUtils.c" ex="false" tool="0" flavor2="0">
       </item>
