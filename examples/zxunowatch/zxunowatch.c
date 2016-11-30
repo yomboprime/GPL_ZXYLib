@@ -19,15 +19,38 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
+#include <spectrum.h>
 #include "../../src/textUtils.h"
 #include "../../src/graphics.h"
 #include "watchGraphicsDef.h"
+#include "media/palettes.h"
+
 //#include "../src/EspDrv/EspDrv.h"
 //#include "../src/EspDrv/IPAddress.h"
 
-#define ALARM_D0_X 128
-#define ALARM_D0_Y 75
-
+#define DIGIT_0 0
+#define DIGIT_1 1
+#define DIGIT_2 2
+#define DIGIT_3 3
+#define DIGIT_4 4
+#define DIGIT_5 5
+#define DIGIT_6 6
+#define DIGIT_7 7
+#define DIGIT_8 8
+#define DIGIT_9 9
+#define DIGIT_F 10
+#define DIGIT_R 11
+#define DIGIT_M 12
+#define DIGIT_O 13
+#define DIGIT_A 14
+#define DIGIT_U 15
+#define DIGIT_T 16
+#define DIGIT_H 17
+#define DIGIT_W 18
+#define DIGIT_E 19
+#define DIGIT_S 5
+#define DIGIT_SPACE 20
+#define DIGIT_BIG_SPACE 10
 
 #define getKey() in_Inkey()
 
@@ -37,12 +60,16 @@ void waitKey() {
 }
 
 #define BUFFER_SIZE 128
-uint8_t buffer[ BUFFER_SIZE ];
+uint8_t theBuffer[ BUFFER_SIZE ];
 
 
 // Function prototypes
 
 void setPalette();
+void paintHourSeconds( uint8_t *buffer );
+void paintUpperDigits( uint8_t *buffer );
+void paintAlarmFlags( uint8_t flags );
+
 
 
 #if 0
@@ -107,7 +134,6 @@ void mainServer(void) {
     textUtils_print( "Press a key to continue...\n" );
 
     waitKey();
-
 
     while (1) {
 
@@ -192,22 +218,29 @@ void main(void) {
 
     int i;
 
-    setPalette();
+    setPalette( palette );
     ula_plus_mode();
 
     srand( time(NULL) );
     textUtils_32ColumnsMode();
-    zx_border( INK_BLUE );
+    zx_border( INK_BLACK );
 
-/*
-    waitKey();
-
-    for ( i = 0; i < 50; i ++ ) {
-
-        paintGraphicPixelPosition( rand() % ( 256 - 8 ), rand() % ( 192 - 16 ), 1, 2, graphicsSmallDigits + 16 * ( rand() % 10 ) );
-
+    for ( i = 0; i < 6; i++ ) {
+        theBuffer[ i ] = i;
     }
-*/
+    paintHourSeconds( theBuffer );
+
+    /*
+    theBuffer[ 0 ] = DIGIT_T;
+    theBuffer[ 1 ] = DIGIT_U;
+    theBuffer[ 2 ] = DIGIT_2;
+    theBuffer[ 3 ] = DIGIT_9;
+    */
+    theBuffer[ 0 ] = DIGIT_S;
+    theBuffer[ 1 ] = DIGIT_A;
+    theBuffer[ 2 ] = DIGIT_F;
+    theBuffer[ 3 ] = DIGIT_R;
+    paintUpperDigits( theBuffer );
 
     waitKey();
 
@@ -215,7 +248,7 @@ void main(void) {
 
 }
 
-void setPalette() {
+void setPalette( uint8_t *palette ) {
 
     int i;
 
@@ -224,63 +257,67 @@ void setPalette() {
 
     // Colors with BRIGHT = 0
 
-    ulaplus_set( 0, (uint8_t)0x00 );
-    // 000 001 10
-    ulaplus_set( 1, (uint8_t)0x06 );
-    // 000 110 00
-    ulaplus_set( 2, (uint8_t)0x18 );
-    // 011 000 10
-    ulaplus_set( 3, (uint8_t)0x62 );
-    // 000 000 00
-    ulaplus_set( 4, (uint8_t)0x00 );
-    // 110 110 11
-    ulaplus_set( 5, (uint8_t)0xDB );
-    // 111 111 11
-    ulaplus_set( 6, (uint8_t)0xFF );
-    // 110 110 11
-    ulaplus_set( 7, (uint8_t)0xDB );
+    for ( i = 0; i < 8; i++ ) {
 
-    // Same for paper
-    ulaplus_set( 8,  (uint8_t)0x00 );
-    ulaplus_set( 9,  (uint8_t)0x06 );
-    ulaplus_set( 10, (uint8_t)0x18 );
-    ulaplus_set( 11, (uint8_t)0x62 );
-    ulaplus_set( 12, (uint8_t)0x00 );
-    ulaplus_set( 13, (uint8_t)0xDB );
-    ulaplus_set( 14, (uint8_t)0xFF );
-    ulaplus_set( 15, (uint8_t)0xDB );
+        // Ink
+        ulaplus_set( i, palette[ i ] );
+
+        // Paper
+        ulaplus_set( i + 8, palette[ i ] );
+
+    }
 
     // Colors with BRIGHT = 1
 
-    // 000 000 00
-    ulaplus_set( 16, (uint8_t)0x00 );
-    // 000 000 00
-    ulaplus_set( 17, (uint8_t)0x00 );
-    // 000 000 00
-    ulaplus_set( 18, (uint8_t)0x00 );
-    // 000 000 00
-    ulaplus_set( 19, (uint8_t)0x00 );
-    // 000 000 00
-    ulaplus_set( 20, (uint8_t)0x00 );
-    // 000 000 00
-    ulaplus_set( 21, (uint8_t)0x00 );
-    // 101 110 00
-    ulaplus_set( 22, (uint8_t)0xB8 );
-    // 111 110 11
-    ulaplus_set( 23, (uint8_t)0xFB );
+    for ( i = 16; i < 24; i++ ) {
 
-    // Same for paper
-    ulaplus_set( 24, (uint8_t)0x00 );
-    ulaplus_set( 25, (uint8_t)0x00 );
-    ulaplus_set( 26, (uint8_t)0x00 );
-    ulaplus_set( 27, (uint8_t)0x00 );
-    ulaplus_set( 28, (uint8_t)0x00 );
-    ulaplus_set( 29, (uint8_t)0x00 );
-    ulaplus_set( 30, (uint8_t)0xB8 );
-    ulaplus_set( 31, (uint8_t)0xFB );
+        // Ink
+        ulaplus_set( i, palette[ i - 8 ] );
+
+        // Paper
+        ulaplus_set( i + 8, palette[ i - 8 ] );
+
+    }
+
+    // Colors with FLASH = 1
 
     for ( i = 32; i < 64; i++ ) {
-        ulaplus_set( i, (uint8_t)0x00 );
+
+        ulaplus_set( i, 0x00 );
     }
+
+}
+
+void paintHourSeconds( uint8_t *buffer ) {
+
+    // Expects 6 bytes in the buffer "hhmmss", 0 to 9 are numeric characters, 10 is space
+
+    // Hours
+    paintGraphicBlockPosition( 11, 11, 2, 4, graphicsBigDigits + ( ( *buffer++ ) << 6 ) );
+    paintGraphicBlockPosition( 13, 11, 2, 4, graphicsBigDigits + ( ( *buffer++ ) << 6 ) );
+
+    // Minutes
+    paintGraphicBlockPosition( 16, 11, 2, 4, graphicsBigDigits + ( ( *buffer++ ) << 6 ) );
+    paintGraphicBlockPosition( 18, 11, 2, 4, graphicsBigDigits + ( ( *buffer++ ) << 6 ) );
+
+    // Seconds
+    paintGraphicPixelPosition( 161, 103, 1, 13, graphicsSmallDigits + ( ( *buffer++ ) << 4 ) );
+    paintGraphicPixelPosition( 171, 103, 1, 13, graphicsSmallDigits + ( ( *buffer ) << 4 ) );
+
+}
+
+void paintUpperDigits( uint8_t *buffer ) {
+
+    // Expects 4 bytes in the buffer, 0 to 9 are numeric digits, 10 to 19 are the letters FRMOAUTHWE in that order, 20 is space
+
+    paintGraphicPixelPosition( 127, 75, 1, 13, graphicsSmallDigits + ( ( *buffer++ ) << 4 ) );
+    paintGraphicPixelPosition( 137, 75, 1, 13, graphicsSmallDigits + ( ( *buffer++ ) << 4 ) );
+
+    paintGraphicPixelPosition( 151, 75, 1, 13, graphicsSmallDigits + ( ( *buffer++ ) << 4 ) );
+    paintGraphicPixelPosition( 161, 75, 1, 13, graphicsSmallDigits + ( ( *buffer ) << 4 ) );
+
+}
+
+void paintAlarmFlags( uint8_t flags ) {
 
 }

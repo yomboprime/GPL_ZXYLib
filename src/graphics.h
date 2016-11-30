@@ -20,23 +20,11 @@
 
 #include "../src/integerTypes.h"
 
-// Use this modes in setULAPlusMode()
-#define ULAPLUS_MODE_NORMAL 0
-#define ULAPLUS_MODE_PALETTE 1
-#define ULAPLUS_MODE_GRAYSCALE 2
-#define ULAPLUS_MODE_RADASTAN 3
-
-extern void setULAPlusMode( uint8_t mode );
-extern void setULAPlusPaletteRegister( uint8_t reg, uint8_t rrrggbb );
-
-
-// These functions are for the normal ZX Spectrum graphics mode or The ulaplus paletted mode (not for Radastan  mode)
-
 extern void paintGraphic8x8BlockPosition( uint16_t blockPosX, uint16_t blockPosY, uint8_t *graphic );
 extern void paintGraphicBlockPosition( uint16_t blockPosX, uint16_t blockPosY, uint16_t numBlocksX, uint16_t numBlocksY, uint8_t *graphic );
 
-extern void paintGraphic8x8PixelPosition( uint16_t pixelPosX, uint16_t pixelPosY, uint8_t *graphic );
-extern void paintGraphicPixelPosition( uint16_t pixelPosX, uint16_t pixelPosY, uint16_t numBlocksX, uint16_t numBlocksY, uint8_t *graphic );
+extern void paintGraphic8x8PixelPosition( uint16_t pixelPosX, uint16_t pixelPosY, uint16_t numLines, uint8_t *graphic );
+extern void paintGraphicPixelPosition( uint16_t pixelPosX, uint16_t pixelPosY, uint16_t numBlocksX, uint16_t numPixelsY, uint8_t *graphic );
 
 #endif /* GRAPHICS_H */
 

@@ -19,20 +19,6 @@
 #include <stdlib.h>
 #include <spectrum.h>
 
-void setULAPlusMode( uint8_t mode ) {
-
-    outp( 0xFC3B, 64 );
-    outp( 0xFD3B, mode );
-
-}
-
-void setULAPlusPaletteRegister( uint8_t reg, uint8_t rrrggbb ) {
-
-    outp( 0xBF3B, reg & 63 );
-    outp( 0xFF3B, rrrggbb );
-
-}
-
 void paintGraphic8x8BlockPosition( uint16_t blockPosX, uint16_t blockPosY, uint8_t *graphic ) {
 
     uint8_t *addr = zx_cyx2saddr( blockPosY, blockPosX );
@@ -69,7 +55,7 @@ void paintGraphicBlockPosition( uint16_t blockPosX, uint16_t blockPosY, uint16_t
 
 }
 
-void paintGraphic8x8PixelPosition( uint16_t pixelPosX, uint16_t pixelPosY, uint8_t *graphic ) {
+void paintGraphic8x8PixelPosition( uint16_t pixelPosX, uint16_t pixelPosY, uint16_t numLines, uint8_t *graphic ) {
 
     uint8_t mask;
     uint8_t *addr = zx_pxy2saddr( pixelPosX, pixelPosY, &mask );
@@ -87,7 +73,7 @@ void paintGraphic8x8PixelPosition( uint16_t pixelPosX, uint16_t pixelPosY, uint8
         mask = ( mask << 1 ) - 1;
     }
 
-    for ( i = 0; i < 8; i++ ) {
+    for ( i = 0; i < numLines; i++ ) {
 
         pixelsScreen = *addr & ( ~ mask );
 
@@ -112,22 +98,32 @@ void paintGraphic8x8PixelPosition( uint16_t pixelPosX, uint16_t pixelPosY, uint8
 
 }
 
-void paintGraphicPixelPosition( uint16_t pixelPosX, uint16_t pixelPosY, uint16_t numBlocksX, uint16_t numBlocksY, uint8_t *graphic ) {
+void paintGraphicPixelPosition( uint16_t pixelPosX, uint16_t pixelPosY, uint16_t numBlocksX, uint16_t numPixelsY, uint8_t *graphic ) {
 
     uint16_t i, y;
-    uint16_t maxi = pixelPosY + numBlocksY;
+    uint16_t linesLeft;
 
     while ( numBlocksX > 0 ) {
 
         y = pixelPosY;
+        linesLeft = numPixelsY;
 
-        for ( i = 0; i < numBlocksY; i++ ) {
+        while ( linesLeft >= 8 ) {
 
-            paintGraphic8x8PixelPosition( pixelPosX, y, graphic );
+            paintGraphic8x8PixelPosition( pixelPosX, y, 8, graphic );
 
             graphic += 8;
 
             y+= 8;
+            linesLeft -= 8;
+
+        }
+
+        if ( linesLeft > 0 ) {
+
+            paintGraphic8x8PixelPosition( pixelPosX, y, linesLeft, graphic );
+
+            graphic += 8;
 
         }
 

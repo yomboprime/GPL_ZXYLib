@@ -12,6 +12,7 @@
       <df name="examples">
         <df name="zxunowatch">
           <in>watchGraphicsDef.h</in>
+          <in>zxunowatch.c</in>
         </df>
         <in>exampleSDList.c</in>
         <in>exampleSDRead.c</in>
@@ -86,6 +87,8 @@
             ex="false"
             tool="3"
             flavor2="0">
+      </item>
+      <item path="examples/zxunowatch/zxunowatch.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="src/esxdos.c" ex="false" tool="0" flavor2="0">
       </item>
