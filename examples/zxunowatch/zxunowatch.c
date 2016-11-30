@@ -242,7 +242,22 @@ void main(void) {
     theBuffer[ 3 ] = DIGIT_R;
     paintUpperDigits( theBuffer );
 
-    waitKey();
+    i = 0;
+    while ( getKey() == 0 ) {
+
+        paintAlarmFlags( i );
+
+        i++;
+
+        if ( i >= 8 ) {
+            i = 0;
+        }
+
+        delay( 1000 );
+
+    }
+
+    //waitKey();
 
     ula_normal_mode();
 
@@ -319,5 +334,9 @@ void paintUpperDigits( uint8_t *buffer ) {
 }
 
 void paintAlarmFlags( uint8_t flags ) {
+
+    flags &= 0x07;
+
+    paintGraphicBlockPosition( 10, 9, 4, 2, graphicsIcons + ( flags << 6 ) );
 
 }
