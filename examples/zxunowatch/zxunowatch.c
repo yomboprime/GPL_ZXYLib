@@ -25,8 +25,8 @@
 #include "watchGraphicsDef.h"
 #include "media/palettes.h"
 
-//#include "../src/EspDrv/EspDrv.h"
-//#include "../src/EspDrv/IPAddress.h"
+#include "../../src/EspDrv/EspDrv.h"
+#include "../../src/EspDrv/IPAddress.h"
 
 #define DIGIT_0 0
 #define DIGIT_1 1
@@ -59,9 +59,12 @@ void waitKey() {
     while (!getKey());
 }
 
-#define BUFFER_SIZE 128
-uint8_t theBuffer[ BUFFER_SIZE ];
+#define BUFFER_SIZE 1023
+uint8_t theBuffer[ BUFFER_SIZE + 1 ];
 
+uint8_t currentTime[ 6 ];
+
+int i;
 
 // Function prototypes
 
@@ -69,154 +72,23 @@ void setPalette();
 void paintHourSeconds( uint8_t *buffer );
 void paintUpperDigits( uint8_t *buffer );
 void paintAlarmFlags( uint8_t flags );
+bool timeIsGreater( uint8_t *timeBuffer1, uint8_t *timeBuffer2 );
+void connectWiFi( uint8_t *ssid, uint8_t *passw );
+void disconnectWiFi();
+int getTimeAsText( uint8_t *buffer );
+bool parseTime( uint8_t *buffer, uint8_t *time );
+uint8_t ascii2smallDigit( uint8_t a );
 
 
-
-#if 0
-
-void mainServer(void) {
-
-    // Time service
-    char* host = "india.colorado.edu";
-    uint16_t serverPort = 13;
+void main(void) {
 
     // Wifi name:
     char *ssid = "apoint";
     // Wifi password:
     char*ssidpassw = "apoint123";
 
-    uint8_t connected = false;
-    IPAddress localIP[ 4 ];
+    int error;
 
-    bool connClosed;
-    uint8_t returnCode;
-
-    uint8_t c = 0;
-    uint8_t *pbuf;
-
-    uint8_t key;
-
-    textUtils_64ColumnsMode();
-    textUtils_cls();
-
-    textUtils_println( "This example is a 'TCP terminal'. Press a key to start." );
-
-    waitKey();
-
-    textUtils_println( "Initing WiFi chip..." );
-
-    if ( EspDrv_wifiDriverInit() == true ) {
-
-        textUtils_println( "WiFi module inited OK." );
-
-    } else {
-
-        textUtils_println( "Couldn't communicate with the WiFi module. Press key to exit." );
-
-        waitKey();
-
-        exit(1);
-
-    }
-
-    textUtils_print( "Trying to connect to net " );
-    textUtils_print( ssid );
-    textUtils_println( "..." );
-    while ( connected == false ) {
-        connected = EspDrv_wifiConnect( ssid, ssidpassw );
-        textUtils_print( "..." );
-    }
-    textUtils_println( "Connected to WiFi." );
-
-    EspDrv_getIpAddress( localIP );
-    printf( "IP Address: %d,%d,%d,%d\n", localIP[ 0 ], localIP[ 1 ], localIP[ 2 ], localIP[ 3 ] );
-
-    textUtils_print( "Press a key to continue...\n" );
-
-    waitKey();
-
-    while (1) {
-
-    connClosed = false;
-    textUtils_println( "Trying to connect to server..." );
-
-    EspDrv_stopClient( 1 );
-    if ( EspDrv_startClient( host, serverPort, 1, TCP_MODE ) == false ) {
-
-        textUtils_println("Can't connect to server.");
-
-        return;
-
-    }
-
-    textUtils_println( "\nConnected to server. Type to send chars, received chars will be shown." );
-
-    connClosed = false;
-    key = 0;
-    while ( connClosed == false && key != 12 ) {
-
-        // Reads data
-        if ( EspDrv_availData( 1 ) > 0 ) {
-
-            if ( EspDrv_getData( 1, &c, false, &connClosed ) == false ) {
-                textUtils_println( "ERROR reading socket***" );
-            }
-            else if ( c >= 32 && c < 127 ) {
-                fputc_cons( c );
-            }
-            else if ( c == '\n' || c == '\r' ) {
-                fputc_cons( c );
-            }
-
-        }
-
-
-        // Send data
-        key = getKey();
-        if ( key > 0 && key != 12 ) {
-            while ( getKey() > 0 ) {
-                // Wait key release
-            }
-
-            if ( key == '\n' ) {
-                buffer[ 0 ] = '\n';
-                buffer[ 1 ] = '\r';
-                buffer[ 2 ] = 0;
-            }
-            else {
-                buffer[ 0 ] = key;
-                buffer[ 1 ] = 0;
-            }
-
-            if ( EspDrv_sendData( 1, buffer, strlen( buffer ), false ) == false ) {
-                textUtils_println( "Error sending data." );
-                return;
-            }
-
-            textUtils_print( buffer );
-
-        }
-
-    }
-    
-    delay( 1200 );
-
-    }
-
-    textUtils_println( "\nDisconnecting WiFi..." );
-
-    EspDrv_disconnect();
-
-    textUtils_println( "End. Press a key." );
-    waitKey();
-
-}
-
-#endif
-
-void main(void) {
-
-    int i;
 
     setPalette( palette );
     ula_plus_mode();
@@ -226,42 +98,34 @@ void main(void) {
     zx_border( INK_BLACK );
 
     for ( i = 0; i < 6; i++ ) {
-        theBuffer[ i ] = i;
+        currentTime[ i ] = 0;
     }
-    paintHourSeconds( theBuffer );
+    paintHourSeconds( currentTime );
 
-    /*
-    theBuffer[ 0 ] = DIGIT_T;
-    theBuffer[ 1 ] = DIGIT_U;
-    theBuffer[ 2 ] = DIGIT_2;
-    theBuffer[ 3 ] = DIGIT_9;
-    */
-    theBuffer[ 0 ] = DIGIT_S;
-    theBuffer[ 1 ] = DIGIT_A;
-    theBuffer[ 2 ] = DIGIT_F;
-    theBuffer[ 3 ] = DIGIT_R;
-    paintUpperDigits( theBuffer );
+    connectWiFi( ssid, ssidpassw );
 
-    i = 0;
-    while ( getKey() == 0 ) {
+    while ( 1 ) {
+        
+        error = getTimeAsText( theBuffer );
+        if ( error > 0 ) {
+            textUtils_print( "ERROR: " );
+            textUtils_print_l( error );
+        }
+        else {
 
-        paintAlarmFlags( i );
+            if ( parseTime( theBuffer, currentTime ) ) {
+                paintHourSeconds( currentTime );
+                paintUpperDigits( currentTime + 6 );
+            }
 
-        i++;
-
-        if ( i >= 8 ) {
-            i = 0;
         }
 
-        delay( 1000 );
-
     }
-
-    //waitKey();
 
     ula_normal_mode();
 
 }
+
 
 void setPalette( uint8_t *palette ) {
 
@@ -338,5 +202,228 @@ void paintAlarmFlags( uint8_t flags ) {
     flags &= 0x07;
 
     paintGraphicBlockPosition( 10, 9, 4, 2, graphicsIcons + ( flags << 6 ) );
+
+}
+
+bool timeIsGreater( uint8_t *timeBuffer1, uint8_t *timeBuffer2 ) {
+
+    // Returns true iff time1 > time2
+
+    int16_t i;
+    uint8_t v1, v2;
+
+    for ( i = 0; i < 6; i++ ) {
+
+        v1 = *timeBuffer1++;
+        v2 = *timeBuffer2++;
+
+        if ( v1 > v2 ) {
+            return true;
+        }
+        else if ( v1 < v2 ) {
+            return false;
+        }
+
+        // If v1==v2, the loop continues
+
+    }
+
+    return false;
+
+}
+
+void connectWiFi( uint8_t *ssid, uint8_t *passw ) {
+
+    uint8_t connected = false;
+    uint8_t flagDisplayCon;
+
+    if ( EspDrv_wifiDriverInit() == false ) {
+
+        textUtils_cls();
+        textUtils_println( "Couldn't communicate with the WiFi module. Press a key to exit." );
+        waitKey();
+
+        exit(1);
+
+    }
+
+    flagDisplayCon = 0;
+    while ( connected == false ) {
+
+        connected = EspDrv_wifiConnect( ssid, passw );
+
+        for ( i = 0; i < 6; i++ ) {
+            //theBuffer[ i ] = ( ( i & 1 ) ^ flagDisplayCon ) != 0 ? ( i < 4 ? DIGIT_BIG_SPACE : DIGIT_SPACE ) : DIGIT_8;
+            theBuffer[ i ] = ( ( i ^ flagDisplayCon ) & 1 ) != 0 ? DIGIT_8 : DIGIT_1;
+        }
+
+        paintHourSeconds( theBuffer );
+
+        flagDisplayCon = flagDisplayCon == 0 ? 1 : 0;
+    }
+
+}
+
+void disconnectWiFi() {
+
+    EspDrv_disconnect();
+
+}
+
+int getTimeAsText( uint8_t *buffer ) {
+
+    bool connClosed;
+    uint8_t c = 0;
+    uint8_t *pbuf;
+    uint16_t numBytesReceived;
+    uint8_t parseState;
+
+    connClosed = false;
+
+    EspDrv_stopClient( 1 );
+    if ( EspDrv_startClient( "www.google.com", 80, 1, TCP_MODE ) == false ) {
+        return 1;
+    }
+
+
+    connClosed = false;
+
+    pbuf = "GET /";
+    if ( EspDrv_sendData( 1, pbuf, strlen( pbuf ), true) == false ) {
+        return 2;
+    }
+    else {
+        parseState = 0;
+        numBytesReceived = 0;
+        pbuf = "Date: ";
+
+        while ( connClosed == false ) {
+            if ( EspDrv_availData( 1 ) > 0 ) {
+
+                if ( EspDrv_getData( 1, &c, false, &connClosed ) == false ) {
+                    return 3;
+                }
+
+                switch ( parseState ) {
+                    case 0:
+                    case 1:
+                    case 2:
+                    case 3:
+                    case 4:
+                    case 5:
+                        if ( c == pbuf[ parseState ] ) {
+                            parseState++;
+                        }
+                        else {
+                            parseState = 0;
+                        }
+                        break;
+                    case 6:
+                        if ( c == 13 ) {
+                            parseState++;
+                        }
+                        else if ( numBytesReceived < BUFFER_SIZE ) {
+                            buffer[ numBytesReceived++ ] = c;
+                        }
+                        break;
+                    default:
+                        // Just read rest of bytes, do nothing
+                        break;
+                }
+            }
+        }
+
+        buffer[ numBytesReceived ] = 0;
+
+    }
+
+    return 0;
+}
+
+bool parseTime( uint8_t *buffer, uint8_t *time ) {
+
+    // Input: "Mon, 01 Jan 2000 00:00:00 GMT"
+
+    // time: HHmmsswwDD
+    // ww = day of week (letters)
+    // DD = day of month (numbers)
+
+    uint8_t w0;
+    uint8_t w1;
+    uint8_t d0;
+    uint8_t d1;
+
+    w0 = *buffer++;
+    w1 = *buffer++;
+    buffer += 3;
+
+    d0 = *buffer++;
+    d1 = *buffer++;
+    buffer += 10;
+
+    *time++ = *buffer++ - '0';
+    *time++ = *buffer++ - '0';
+    buffer++;
+    *time++ = *buffer++ - '0';
+    *time++ = *buffer++ - '0';
+    buffer++;
+    *time++ = *buffer++ - '0';
+    *time++ = *buffer++ - '0';
+
+    *time++ = ascii2smallDigit( w0 );
+    *time++ = ascii2smallDigit( w1 );
+    *time++ = ascii2smallDigit( d0 );
+    *time++ = ascii2smallDigit( d1 );
+
+    return true;
+
+}
+
+uint8_t ascii2smallDigit( uint8_t a ) {
+
+    if ( a >= '0' && a <= '9' ) {
+        return a - '0';
+    }
+
+    switch ( a ) {
+        case 'F':
+        case 'f':
+            return DIGIT_F;
+        case 'R':
+        case 'r':
+            return DIGIT_R;
+        case 'M':
+        case 'm':
+            return DIGIT_M;
+        case 'O':
+        case 'o':
+            return DIGIT_O;
+        case 'A':
+        case 'a':
+            return DIGIT_A;
+        case 'U':
+        case 'u':
+            return DIGIT_U;
+        case 'T':
+        case 't':
+            return DIGIT_T;
+        case 'H':
+        case 'h':
+            return DIGIT_H;
+        case 'W':
+        case 'w':
+            return DIGIT_W;
+        case 'E':
+        case 'e':
+            return DIGIT_E;
+        case 'S':
+        case 's':
+            return DIGIT_S;
+        case ' ':
+            return DIGIT_SPACE;
+
+        default:
+            return 0;
+    }
 
 }
