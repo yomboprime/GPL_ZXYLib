@@ -66,6 +66,8 @@
         <df name="png2ulapluspalette">
           <df name="node_modules">
             <df name="canvas">
+              <df name=".github">
+              </df>
               <df name="build">
                 <df name="Release">
                   <df name=".deps">
@@ -87,32 +89,6 @@
                 </df>
               </df>
               <df name="lib">
-              </df>
-              <df name="node_modules">
-                <df name="nan">
-                  <df name="doc">
-                  </df>
-                  <df name="tools">
-                  </df>
-                  <in>nan.h</in>
-                  <in>nan_callbacks.h</in>
-                  <in>nan_callbacks_12_inl.h</in>
-                  <in>nan_callbacks_pre_12_inl.h</in>
-                  <in>nan_converters.h</in>
-                  <in>nan_converters_43_inl.h</in>
-                  <in>nan_converters_pre_43_inl.h</in>
-                  <in>nan_implementation_12_inl.h</in>
-                  <in>nan_implementation_pre_12_inl.h</in>
-                  <in>nan_maybe_43_inl.h</in>
-                  <in>nan_maybe_pre_43_inl.h</in>
-                  <in>nan_new.h</in>
-                  <in>nan_object_wrap.h</in>
-                  <in>nan_persistent_12_inl.h</in>
-                  <in>nan_persistent_pre_12_inl.h</in>
-                  <in>nan_string_bytes.h</in>
-                  <in>nan_typedarray_contents.h</in>
-                  <in>nan_weak.h</in>
-                </df>
               </df>
               <df name="src">
                 <in>Canvas.cc</in>
@@ -138,6 +114,80 @@
                 <in>init.cc</in>
               </df>
               <df name="util">
+              </df>
+            </df>
+            <df name="css-font-size-keywords">
+            </df>
+            <df name="css-font-stretch-keywords">
+            </df>
+            <df name="css-font-style-keywords">
+            </df>
+            <df name="css-font-weight-keywords">
+            </df>
+            <df name="css-global-keywords">
+            </df>
+            <df name="css-list-helpers">
+            </df>
+            <df name="css-system-font-keywords">
+            </df>
+            <df name="isnumeric">
+            </df>
+            <df name="nan">
+              <df name="doc">
+              </df>
+              <df name="tools">
+              </df>
+              <in>nan.h</in>
+              <in>nan_callbacks.h</in>
+              <in>nan_callbacks_12_inl.h</in>
+              <in>nan_callbacks_pre_12_inl.h</in>
+              <in>nan_converters.h</in>
+              <in>nan_converters_43_inl.h</in>
+              <in>nan_converters_pre_43_inl.h</in>
+              <in>nan_implementation_12_inl.h</in>
+              <in>nan_implementation_pre_12_inl.h</in>
+              <in>nan_json.h</in>
+              <in>nan_maybe_43_inl.h</in>
+              <in>nan_maybe_pre_43_inl.h</in>
+              <in>nan_new.h</in>
+              <in>nan_object_wrap.h</in>
+              <in>nan_persistent_12_inl.h</in>
+              <in>nan_persistent_pre_12_inl.h</in>
+              <in>nan_private.h</in>
+              <in>nan_string_bytes.h</in>
+              <in>nan_typedarray_contents.h</in>
+              <in>nan_weak.h</in>
+            </df>
+            <df name="parse-css-font">
+              <df name="lib">
+              </df>
+            </df>
+            <df name="tcomb">
+              <df name="lib">
+              </df>
+            </df>
+            <df name="units-css">
+              <df name="bower_components">
+                <df name="isnumeric">
+                </df>
+                <df name="viewport-dimensions">
+                  <df name="dist">
+                  </df>
+                </df>
+              </df>
+              <df name="dist">
+              </df>
+              <df name="lib">
+                <df name="conversions">
+                </df>
+              </df>
+            </df>
+            <df name="unquote">
+              <df name="test">
+              </df>
+            </df>
+            <df name="viewport-dimensions">
+              <df name="dist">
               </df>
             </df>
           </df>

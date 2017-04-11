@@ -6,7 +6,7 @@
 
 
 # Configure here your path to Node js:
-node = /media/datos/soft/nodejs/node-v4.4.5-linux-x64/bin/node
+node = node
 
 
 # All the source files:
@@ -33,8 +33,8 @@ srcFilesExampleTCPTerminal = src/EspDrv/RingBuffer.c src/EspDrv/IPAddress.c src/
 srcFilesExampleWatch =  src/EspDrv/RingBuffer.c src/EspDrv/IPAddress.c src/EspDrv/EspDrv.c src/graphics.c src/textUtils.c src/zxuno/uart.c src/zxuno/zxuno.c examples/zxunowatch/zxunowatch.c
 
 # All the targets:
-#all: generateBASICLoader createExample1 createExample2 createExample3 createExample4 createExample5 createExample6 createExample7 createExample8 createExample9 createExample10
-all: generateBASICLoader createExample11
+all: generateBASICLoader createExample1 createExample2 createExample3 createExample4 createExample5 createExample6 createExample7 createExample8 createExample9 createExample10 createExample11
+#all: generateBASICLoader createExample11
 
 
 # Targets:
