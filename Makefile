@@ -30,14 +30,17 @@ srcFilesExampleUARTTerminal = src/textUtils.c src/esxdos.c src/zxuno/uart.c src/
 
 srcFilesExampleTCPTerminal = src/EspDrv/RingBuffer.c src/EspDrv/IPAddress.c src/EspDrv/EspDrv.c src/textUtils.c src/zxuno/uart.c src/zxuno/zxuno.c examples/exampleTCPTerminal.c
 
+srcFilesExampleWatch =  src/EspDrv/RingBuffer.c src/EspDrv/IPAddress.c src/EspDrv/EspDrv.c src/graphics.c src/textUtils.c src/zxuno/uart.c src/zxuno/zxuno.c examples/zxunowatch/zxunowatch.c
+
 # All the targets:
-all: generateBASICLoader createExample1 createExample2 createExample3 createExample4 createExample5 createExample6 createExample7 createExample8 createExample9 createExample10
+#all: generateBASICLoader createExample1 createExample2 createExample3 createExample4 createExample5 createExample6 createExample7 createExample8 createExample9 createExample10
+all: generateBASICLoader createExample11
 
 
 # Targets:
 
 generateBASICLoader:
-	./bas2tap/bas2tap -q -a10 -sftpUno ./cargadorBASIC/cargador.bas
+	./bas2tap/bas2tap -q -a10 -sGPL_ZXYLib ./cargadorBASIC/cargador.bas
 
 
 #------------------------------------------------------------------------------
@@ -219,6 +222,33 @@ generateWav10:
 
 generateWavLeches10:
 	./CgLeches TCPTERM.tap TCPTERM.wav 3 > ultimolog.txt
+
+
+#------------------------------------------------------------------------------
+
+
+createExample11: generateBASICLoader11 createPalette11 compile11 createTAP11 concatenateTAPs11 generateWavLeches11
+
+generateBASICLoader11:
+	./bas2tap/bas2tap -q -a10 -swatch ./examples/zxunowatch/loader/loader.bas
+
+createPalette11:
+	$(node) ./tools/png2ulapluspalette/main.js ../../examples/zxunowatch/media/palette.png > ultimolog.txt
+
+compile11:
+	zcc +zx -o f11.bin -lndos $(srcFilesExampleWatch) > ultimolog.txt
+
+createTAP11:
+	$(node) ./bin2tap-js/bin2tap.js ../f11.bin > ultimolog.txt
+
+concatenateTAPs11:
+	cat ./examples/zxunowatch/loader/loader.tap ./examples/zxunowatch/media/timex.tap f11.tap > TIMEZX.tap
+
+generateWav11:
+	tape2wav ./TIMEZX.tap ./TIMEZX.wav > ultimolog.txt
+
+generateWavLeches11:
+	./CgLeches TIMEZX.tap TIMEZX.wav 3 > ultimolog.txt
 
 
 #------------------------------------------------------------------------------

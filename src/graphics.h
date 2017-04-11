@@ -18,7 +18,7 @@
 #ifndef GRAPHICS_H
 #define GRAPHICS_H
 
-#include "../src/integerTypes.h"
+#include "integerTypes.h"
 
 extern void paintGraphic8x8BlockPosition( uint16_t blockPosX, uint16_t blockPosY, uint8_t *graphic );
 extern void paintGraphicBlockPosition( uint16_t blockPosX, uint16_t blockPosY, uint16_t numBlocksX, uint16_t numBlocksY, uint8_t *graphic );
