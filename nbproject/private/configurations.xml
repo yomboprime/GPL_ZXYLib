@@ -49,6 +49,10 @@
         <df name="zxuno">
           <in>ftp.c</in>
           <in>ftp.h</in>
+          <in>radas.c</in>
+          <in>radas.h</in>
+          <in>turbo.c</in>
+          <in>turbo.h</in>
           <in>uart.c</in>
           <in>uart.h</in>
           <in>zxuno.c</in>
