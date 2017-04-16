@@ -14,6 +14,10 @@
         <in>leches.c</in>
       </df>
       <df name="examples">
+        <df name="chat">
+          <df name="server">
+          </df>
+        </df>
         <df name="gametest">
           <in>gametest.c</in>
         </df>
@@ -26,7 +30,6 @@
           <in>watchGraphicsDef.h</in>
           <in>zxunowatch.c</in>
         </df>
-        <in>exampleChat.c</in>
         <in>exampleFTPDownload.c</in>
         <in>exampleFTPList.c</in>
         <in>exampleHTTP.c</in>
@@ -62,6 +65,8 @@
           <in>zxuno.c</in>
           <in>zxuno.h</in>
         </df>
+        <in>config.c</in>
+        <in>config.h</in>
         <in>esxdos.c</in>
         <in>esxdos.h</in>
         <in>graphics.c</in>
@@ -202,6 +207,8 @@
         </df>
       </df>
     </df>
+    <itemPath>examples/chat/server/package.json</itemPath>
+    <itemPath>examples/chat/server/server.js</itemPath>
   </logicalFolder>
   <projectmakefile>Makefile</projectmakefile>
   <confs>

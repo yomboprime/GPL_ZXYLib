@@ -17,7 +17,6 @@
           <in>watchGraphicsDef.h</in>
           <in>zxunowatch.c</in>
         </df>
-        <in>exampleChat.c</in>
         <in>exampleSDList.c</in>
         <in>exampleSDRead.c</in>
         <in>exampleSDStat.c</in>
@@ -41,6 +40,8 @@
       <itemPath>Makefile</itemPath>
       <itemPath>nbproject/private/launcher.properties</itemPath>
     </logicalFolder>
+    <itemPath>examples/chat/server/package.json</itemPath>
+    <itemPath>examples/chat/server/server.js</itemPath>
   </logicalFolder>
   <sourceFolderFilter>^(nbproject)$</sourceFolderFilter>
   <sourceRootList>
@@ -79,7 +80,9 @@
       </item>
       <item path="cargandoleches/leches.c" ex="false" tool="0" flavor2="0">
       </item>
-      <item path="examples/exampleChat.c" ex="false" tool="0" flavor2="0">
+      <item path="examples/chat/server/package.json" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="examples/chat/server/server.js" ex="false" tool="3" flavor2="0">
       </item>
       <item path="examples/exampleSDList.c" ex="false" tool="0" flavor2="0">
       </item>

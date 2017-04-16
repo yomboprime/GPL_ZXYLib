@@ -1,0 +1,11 @@
+{
+  "name": "zxuno-server",
+  "version": "0.0.1",
+  "description": "Multipurpose server",
+  "dependencies": {
+  },
+  "scripts": {
+    "start": "node server.js"
+  }
+}
+

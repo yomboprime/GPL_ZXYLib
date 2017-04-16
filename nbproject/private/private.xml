@@ -9,6 +9,13 @@
     </data>
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/media/datos/Devel/spectrum/GPL_ZXYLib/src/textUtils.h</file>
+            <file>file:/media/datos/Devel/spectrum/GPL_ZXYLib/src/EspDrv/EspDrv.c</file>
+            <file>file:/media/datos/Devel/spectrum/GPL_ZXYLib/src/textUtils.c</file>
+            <file>file:/media/datos/Devel/spectrum/GPL_ZXYLib/examples/exampleChat.c</file>
+            <file>file:/media/datos/Devel/spectrum/GPL_ZXYLib/src/zxuno/ftp.c</file>
+            <file>file:/media/datos/Devel/spectrum/GPL_ZXYLib/src/EspDrv/EspDrv.h</file>
+        </group>
     </open-files>
 </project-private>
