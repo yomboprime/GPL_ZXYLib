@@ -25,11 +25,6 @@
 
 #define getKey() in_Inkey()
 
-void waitKey() {
-    while (getKey());
-    while (!getKey());
-}
-
 #define MAX_DISPLAY_DIR_ENTRIES ( 20 )
 #define MAX_BYTES_FTP_FILENAME ( 20 )
 

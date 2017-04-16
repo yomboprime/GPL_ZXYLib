@@ -24,11 +24,6 @@
 
 #define getKey() in_Inkey()
 
-void waitKey() {
-    while (getKey());
-    while (!getKey());
-}
-
 void main(void) {
 
 

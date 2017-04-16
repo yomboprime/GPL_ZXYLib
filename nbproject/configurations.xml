@@ -10,10 +10,14 @@
         <in>leches.c</in>
       </df>
       <df name="examples">
+        <df name="gametest">
+          <in>gametest.c</in>
+        </df>
         <df name="zxunowatch">
           <in>watchGraphicsDef.h</in>
           <in>zxunowatch.c</in>
         </df>
+        <in>exampleChat.c</in>
         <in>exampleSDList.c</in>
         <in>exampleSDRead.c</in>
         <in>exampleSDStat.c</in>
@@ -75,6 +79,8 @@
       </item>
       <item path="cargandoleches/leches.c" ex="false" tool="0" flavor2="0">
       </item>
+      <item path="examples/exampleChat.c" ex="false" tool="0" flavor2="0">
+      </item>
       <item path="examples/exampleSDList.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="examples/exampleSDRead.c" ex="false" tool="0" flavor2="0">
@@ -82,6 +88,8 @@
       <item path="examples/exampleSDStat.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="examples/exampleSDWrite.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="examples/gametest/gametest.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="examples/zxunowatch/watchGraphicsDef.h"
             ex="false"

@@ -25,11 +25,6 @@
 
 #define getKey() in_Inkey()
 
-void waitKey() {
-    while (getKey());
-    while (!getKey());
-}
-
 #define BUFFER_SIZE 128
 uint8_t buffer[ BUFFER_SIZE ];
 

@@ -14,6 +14,9 @@
         <in>leches.c</in>
       </df>
       <df name="examples">
+        <df name="gametest">
+          <in>gametest.c</in>
+        </df>
         <df name="zxunowatch">
           <df name="loader">
           </df>
@@ -23,6 +26,7 @@
           <in>watchGraphicsDef.h</in>
           <in>zxunowatch.c</in>
         </df>
+        <in>exampleChat.c</in>
         <in>exampleFTPDownload.c</in>
         <in>exampleFTPList.c</in>
         <in>exampleHTTP.c</in>

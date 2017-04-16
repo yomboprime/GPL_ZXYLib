@@ -37,9 +37,7 @@ extern void textUtils_print_l( long n );
 #define textUtils_println( x ) textUtils_print( x ); fputc_cons( '\n' )
 #define textUtils_println_l( x ) textUtils_print_l( x ); fputc_cons( '\n' )
 
-extern void textUtils_printAt32( int x, int y );
-
-extern void textUtils_printAt64( int x, int y );
+extern void textUtils_printAt( int x, int y );
 
 extern void textUtils_setAttributes( uint8_t attributes );
 
@@ -52,5 +50,8 @@ extern void textUtils_paintSegmentWithBright( uint8_t x0, uint8_t x1, uint8_t y,
 extern void textUtils_defineUDGGraphic( uint8_t *graphic, uint16_t graphicIndex );
 
 extern bool isDigit( uint8_t c );
+
+extern uint16_t waitKey();
+extern uint16_t waitKeyPress();
 
 #endif /* TEXTUTILS_H */

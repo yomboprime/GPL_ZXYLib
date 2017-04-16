@@ -17,6 +17,7 @@
 
 #include "textUtils.h"
 #include <stdio.h>
+#include <input.h>
 #include <spectrum.h>
 
 /*
@@ -72,27 +73,21 @@ void textUtils_print_l( long n ) {
 
 /*
  * Locates the cursor in 32 column mode
+ *
+ * In 32 columns mode:
  * 0 <= x <= 31
  * 0 <= y <= 23
+ *
+ * In 64 columns mode:
+ * 0 <= x <= 63
+ * 0 <= y <= 23
+ * 
  */
-void textUtils_printAt32( int x, int y ) {
+void textUtils_printAt( int x, int y ) {
 
     fputc_cons( 22 );
     fputc_cons( (char)( y + 0x20 ) );
     fputc_cons( (char)( x + 0x20 ) );
-
-}
-
-/*
- * Locates the cursor in 64 column mode
- * 0 <= x <= 63
- * 0 <= y <= 23
- */
-void textUtils_printAt64( int x, int y ) {
-
-    fputc_cons( 22 );
-    fputc_cons( (char)y );
-    fputc_cons( (char)x );
 
 }
 
@@ -160,8 +155,6 @@ void textUtils_paintRectangleWithAttributes( uint8_t x0, uint8_t x1, uint8_t y0,
  */
 void textUtils_paintSegmentWithBright( uint8_t x0, uint8_t x1, uint8_t y, bool bright ) {
 
-    // TODO not tested
-
     uint8_t x;
     uint8_t attr;
     uint8_t *ptrAttr = ( (uint8_t *)COLOR_ATTRIBUTE_START_ADDRESS );
@@ -202,4 +195,40 @@ void textUtils_defineUDGGraphic( uint8_t *graphic, uint16_t graphicIndex ) {
 
 bool isDigit( uint8_t c ) {
     return c >= '0' && c <= '9';
+}
+
+/*
+ * Waits for a key press with repetition
+ */
+uint16_t waitKeyPress() {
+
+    uint16_t count = 350;
+
+    uint16_t k = in_Inkey();
+    while ( k > 0 && count > 0 ) {
+        k = in_Inkey();
+        count--;
+    }
+
+    while ( k == 0 ) {
+        k = in_Inkey();
+    };
+
+    return k;
+}
+
+/*
+ * Waits for a key press
+ */
+uint16_t waitKey() {
+
+    uint16_t k = 0;
+
+    while ( in_Inkey() > 0 );
+
+    while ( k == 0 ) {
+        k = in_Inkey();
+    };
+
+    return k;
 }
